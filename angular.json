@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "form-validator-app"
+    }
+  },
+  "defaultProject": "form-validator-app",
+  "cli": {
+    "analytics": false
+  }
 }
