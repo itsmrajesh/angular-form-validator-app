@@ -1,5 +1,8 @@
+import { dbUrlValidate } from './../registration-async-validators';
+import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UsernameAvailabilityAsyncValidator } from '../registration-async-validators';
 
 @Component({
   selector: 'app-signup',
@@ -10,21 +13,35 @@ export class SignupComponent implements OnInit {
 
   registerForm: FormGroup;
 
+  groupIds = ['A', 'B', 'C'];
+
   constructor(
     private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.email]],
+      username: new FormControl('',
+        [Validators.required], UsernameAvailabilityAsyncValidator(this.authService)),
+      dbUrl: new FormControl(''),
+      groupid: new FormControl('Select')
+    }, {
+      validator: [
+        dbUrlValidate('dbUrl', 'groupid')
+      ]
     });
   }
 
-  get f() { return this.registerForm.controls; }
-
 
   onSubmit() {
-    alert('Success');
+    console.log(this.registerForm.value);
   }
+
+  get dburl() { return this.registerForm.get('dburl'); }
+
+  get groupid() { return this.registerForm.get('groupid'); }
+
+  get username() { return this.registerForm.get('username'); }
 
 }

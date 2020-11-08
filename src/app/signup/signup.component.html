@@ -5,32 +5,54 @@
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <label for="username">username</label>
-                    <input type="text" formControlusername="username" class="form-control"
+                    <input type="text" formControlName="username"
+                        class="form-control"
                         placeholder="Enter your username"
-                        [ngClass]="{ 'is-invalid': f.username.touched && f.username.errors }" />
-                    <div *ngIf="f.username.touched && f.username.errors" class="invalid-feedback">
-                        <div *ngIf="f.username.errors.required">username is required</div>
+                        [ngClass]="{ 'is-invalid': username.touched &&
+                        username.errors }" />
+
+                    <div *ngIf="username.invalid && username.hasError('exist')"
+                        class="invalid-feedback">
+                        <div>username already taken</div>
+                    </div>
+
+                    <div *ngIf="username.touched && username.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="username.errors.required">username is
+                            required</div>
                     </div>
                 </div>
 
-                <!-- div starts -->
-               <div class="form-group">
-                <label for="username">Group ID</label> <br>
-                    <select class="form-group" >                       
-                        <option>com.option 1</option>
-                        <option>com.option 2</option>
-                        <option>com.option 3</option>
-                    </select>                    
-                </div><!-- div ends -->
-
-                <!-- div starts -->
                 <div class="form-group">
-                    <label  >DB Url</label>
-                    <input type="text" class="form-control" >
-                  </div><!-- div ends -->
-                <button class="btn btn-primary">Submit</button>
+                    <label>DB Url</label>
+                    <input type="text" class="form-control"
+                        formControlName="dbUrl">
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Group ID</label> <br>
+                    <select class="form-control" formControlName="groupid">
+                        <option *ngFor="let option of groupIds"
+                            [ngValue]="option">
+                            {{option}}
+                        </option>
+                    </select>
+
+                    <div *ngIf="groupid.invalid && groupid.hasError('req')"
+                        class="invalid-feedback">
+                        <div>Group ID is required</div>
+                    </div>
+
+                </div>
+
+
+                <button [disabled]="registerForm.invalid" class="btn
+                    btn-primary">Submit</button>
 
             </form>
         </div>
+
+
+
     </div>
 </div>
